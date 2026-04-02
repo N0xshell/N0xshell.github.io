@@ -1,0 +1,4 @@
+python3 obsidian_to_jekyll.py \
+  "/mnt/Files/Security-Related/Pentesting-Related/HackTheBox/Machines-Writeups/Medium-Machines/Phantom.md" \
+  --category Machines \
+  --tags windows medium
