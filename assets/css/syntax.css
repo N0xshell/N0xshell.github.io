@@ -1,16 +1,52 @@
-/* Dracula syntax highlighting for Rouge/Chirpy */
-.highlight, pre.highlight { background: #282a36; color: #f8f8f2; }
-.highlight .c,  .highlight .cm, .highlight .c1 { color: #6272a4; }  /* comments */
-.highlight .k,  .highlight .kd, .highlight .kn { color: #ff79c6; }  /* keywords */
-.highlight .s,  .highlight .s1, .highlight .s2 { color: #f1fa8c; }  /* strings */
-.highlight .n,  .highlight .na, .highlight .nb { color: #f8f8f2; }  /* names */
-.highlight .m,  .highlight .mi, .highlight .mf { color: #bd93f9; }  /* numbers */
-.highlight .o                                   { color: #ff79c6; }  /* operators */
-.highlight .nf, .highlight .nc                 { color: #50fa7b; }  /* functions/classes */
-.highlight .nv, .highlight .vi                 { color: #8be9fd; }  /* variables */
-.highlight .nt                                 { color: #ff79c6; }  /* tags */
-.highlight .err                                { color: #ff5555; }  /* errors */
-.highlight .gi                                 { color: #50fa7b; }  /* inserted */
-.highlight .gd                                 { color: #ff5555; }  /* deleted */
-.highlight .gh                                 { color: #bd93f9; font-weight: bold; }
-.highlight .ge                                 { font-style: italic; }
+/* Dracula theme - high specificity to override Chirpy dark mode */
+div.highlight, figure.highlight { background: #282a36 !important; }
+
+div.highlight pre, figure.highlight pre,
+div.highlight code, figure.highlight code { 
+  background: #282a36 !important; 
+  color: #f8f8f2 !important; 
+}
+
+/* Comments */
+div.highlight .c, div.highlight .cm, div.highlight .c1, div.highlight .cs,
+figure.highlight .c, figure.highlight .cm, figure.highlight .c1 { color: #6272a4 !important; }
+
+/* Keywords */
+div.highlight .k, div.highlight .kd, div.highlight .kn, div.highlight .kp,
+div.highlight .kr, div.highlight .kt,
+figure.highlight .k, figure.highlight .kd, figure.highlight .kn { color: #ff79c6 !important; }
+
+/* Strings */
+div.highlight .s, div.highlight .s1, div.highlight .s2, div.highlight .sb,
+div.highlight .sc, div.highlight .sd, div.highlight .se, div.highlight .si,
+figure.highlight .s, figure.highlight .s1, figure.highlight .s2 { color: #f1fa8c !important; }
+
+/* Numbers */
+div.highlight .m, div.highlight .mi, div.highlight .mf, div.highlight .mh,
+figure.highlight .m, figure.highlight .mi, figure.highlight .mf { color: #bd93f9 !important; }
+
+/* Operators */
+div.highlight .o, div.highlight .ow,
+figure.highlight .o, figure.highlight .ow { color: #ff79c6 !important; }
+
+/* Functions / class names */
+div.highlight .nf, div.highlight .nc, div.highlight .nd,
+figure.highlight .nf, figure.highlight .nc { color: #50fa7b !important; }
+
+/* Variables */
+div.highlight .nv, div.highlight .vi, div.highlight .vc,
+figure.highlight .nv, figure.highlight .vi { color: #8be9fd !important; }
+
+/* Tags */
+div.highlight .nt, figure.highlight .nt { color: #ff79c6 !important; }
+
+/* Errors */
+div.highlight .err, figure.highlight .err { color: #ff5555 !important; }
+
+/* Diff inserted/deleted */
+div.highlight .gi, figure.highlight .gi { color: #50fa7b !important; }
+div.highlight .gd, figure.highlight .gd { color: #ff5555 !important; }
+
+/* Line numbers */
+div.highlight .ln, div.highlight .gl,
+figure.highlight .ln, figure.highlight .gl { color: #6272a4 !important; }
