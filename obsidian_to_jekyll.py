@@ -83,7 +83,8 @@ def convert(content, post_slug, search_dirs, img_dir):
     def handle_md_image(m):
         alt      = m.group(1)
         filename = m.group(2)
-        if filename.startswith("http://") or filename.startswith("https://"):
+        # skip external URLs and already-converted asset paths
+        if filename.startswith("http://") or filename.startswith("https://") or filename.startswith("/assets/"):
             return m.group(0)
         src = find_image(filename, search_dirs)
         if src:
