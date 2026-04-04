@@ -3,7 +3,8 @@ title: "Certified"
 date: 2026-04-04 00:00:00 +0100
 categories: [HackTheBox, Machines]
 tags:
-  - medium, windows
+  - medium
+  - windows
 ---
 
 ![Pasted image 20260404161101](/assets/img/posts/2026-04-04-certified/Pasted image 20260404161101.png)
