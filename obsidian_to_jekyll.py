@@ -46,6 +46,9 @@ def find_image(filename, search_dirs):
 
 
 def convert(content, post_slug, search_dirs, img_dir):
+    # Fix bare image references: !Pasted image X.png -> ![[Pasted image X.png]]
+    content = re.sub(r'!Pasted image ([^\n]+\.png)', r'![[Pasted image \1]]', content)
+
     # %% Obsidian comments %%
     content = re.sub(r'%%.*?%%', '', content, flags=re.DOTALL)
 
@@ -68,7 +71,7 @@ def convert(content, post_slug, search_dirs, img_dir):
         filename = m.group(1)
         src = find_image(filename, search_dirs)
         if src:
-            shutil.copy2(src, img_dir / filename)
+            shutil.copy2(str(src), str(img_dir / filename))
             print(f"[+] Copied: {filename}")
         else:
             print(f"[!] Not found: {filename} — add manually to {img_dir}/")
@@ -80,12 +83,11 @@ def convert(content, post_slug, search_dirs, img_dir):
     def handle_md_image(m):
         alt      = m.group(1)
         filename = m.group(2)
-        # skip external URLs
         if filename.startswith("http://") or filename.startswith("https://"):
             return m.group(0)
         src = find_image(filename, search_dirs)
         if src:
-            shutil.copy2(src, img_dir / filename)
+            shutil.copy2(str(src), str(img_dir / filename))
             print(f"[+] Copied: {filename}")
         else:
             print(f"[!] Not found: {filename} — add manually to {img_dir}/")
