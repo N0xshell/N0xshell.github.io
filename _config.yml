@@ -1,75 +1,50 @@
 # The Site Configuration
-
 # Import the theme
 theme: jekyll-theme-chirpy
-
 lang: en
 timezone: Europe/Amsterdam
-
 # ↓ --- SEO ---
 title: N0xshell
 tagline: "HackTheBox Writeups"
 description: >-
   HTB machine writeups, pro lab reviews, and certification exam notes by N0xshell.
-
 url: "https://n0xshell.github.io"
-
 github:
   username: N0xshell
-
 social:
   name: N0xshell
   email: "RickRoll"
   links:
     - https://github.com/N0xshell
 # ↑ --- SEO ---
-
-# Verification — leave blank unless you need it
 webmaster_verifications:
   google:
   bing:
-
-# Analytics — optional, fill in if you use any
 analytics:
   google:
     id:
   goatcounter:
     id:
-
 pageviews:
   provider:
-
-# Force dark mode — suits HTB aesthetic
 theme_mode: dark
-
 cdn:
-
-# Sidebar avatar — place your image at /assets/img/avatar.png
 avatar: /assets/img/Hacker.png
-
 social_preview_image:
-
 toc: true
-
 comments:
-  provider: # leave blank to disable
-
+  provider:
 assets:
   self_host:
     enabled:
-
 pwa:
   enabled: true
   cache:
     enabled: true
     deny_paths:
-
 paginate: 10
-
 baseurl: ""
-
 # ------------ Do not modify below unless you know what you're doing ------------------
-
 kramdown:
   footnote_backlink: "&#8617;&#xfe0e;"
   syntax_highlighter: rouge
@@ -85,7 +60,8 @@ collections:
   tabs:
     output: true
     sort_by: order
-
+  categories:
+    output: true
 defaults:
   - scope:
       path: ""
@@ -105,10 +81,14 @@ defaults:
     values:
       layout: page
       permalink: /:title/
-
+  - scope:
+      path: ""
+      type: categories
+    values:
+      layout: category
+      permalink: /categories/:title/
 sass:
   style: compressed
-
 compress_html:
   clippings: all
   comments: all
@@ -117,7 +97,6 @@ compress_html:
   blanklines: false
   ignore:
     envs: [development]
-
 exclude:
   - "*.gem"
   - "*.gemspec"
@@ -129,12 +108,3 @@ exclude:
   - "*.config.js"
   - "package*.json"
   - obsidian_to_jekyll.py
-
-jekyll-archives:
-  enabled: [categories, tags]
-  layouts:
-    category: category
-    tag: tag
-  permalinks:
-    tag: /tags/:name/
-    category: /categories/:name/
