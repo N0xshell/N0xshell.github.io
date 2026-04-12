@@ -171,14 +171,11 @@ def find_image(filename, search_dirs):
 
 
 def make_image_html(src_path, alt, post_slug, filename):
-    """Return figure HTML if caption present, plain markdown otherwise."""
     url = f"/assets/img/posts/{post_slug}/{filename}"
     if alt and alt != Path(filename).stem:
         return (
-            f'<figure>\n'
-            f'  <a href="{url}" data-lightbox="{filename}">\n'
-            f'    <img src="{url}" alt="{alt}">\n'
-            f'  </a>\n'
+            f'<figure markdown="0">\n'
+            f'  <img src="{url}" alt="{alt}" class="no-popup">\n'
             f'  <figcaption>{alt}</figcaption>\n'
             f'</figure>'
         )
