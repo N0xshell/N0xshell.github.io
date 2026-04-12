@@ -19,17 +19,16 @@ import argparse
 from datetime import date
 from pathlib import Path
 
-POSTS_DIR    = Path("_posts")
-ASSETS_DIR   = Path("assets/img/posts")
-TAGS_DIR     = Path("tags")
+POSTS_DIR      = Path("_posts")
+ASSETS_DIR     = Path("assets/img/posts")
+TAGS_DIR       = Path("tags")
 CATEGORIES_DIR = Path("_categories")
-CATEGORIES   = ["Machines", "Prolabs", "Exam Review"]
-DIFFICULTIES = ["easy", "medium", "hard", "insane"]
-OS_OPTIONS   = ["windows", "linux", "freebsd", "other"]
+CATEGORIES     = ["Machines", "Prolabs", "Exam Review"]
+DIFFICULTIES   = ["easy", "medium", "hard", "insane"]
+OS_OPTIONS     = ["windows", "linux", "freebsd", "other"]
 
 WRITEUPS_ROOT = Path("/mnt/Files/Security-Related/Pentesting-Related/HackTheBox/Machines-Writeups")
 
-# Map subdir names to categories
 SUBDIR_CATEGORY_MAP = {
     "medium-machines": "Machines",
     "hard-machines":   "Machines",
@@ -39,7 +38,6 @@ SUBDIR_CATEGORY_MAP = {
     "prolabs":         "Prolabs",
 }
 
-# Map subdir names to difficulty
 SUBDIR_DIFFICULTY_MAP = {
     "medium-machines": "medium",
     "hard-machines":   "hard",
@@ -77,7 +75,6 @@ def get_published_slugs():
 
 
 def ensure_tag_page(tag):
-    """Create tags/<tag>.md if it doesn't exist yet."""
     TAGS_DIR.mkdir(exist_ok=True)
     tag_file = TAGS_DIR / f"{tag}.md"
     if not tag_file.exists():
@@ -89,7 +86,6 @@ def ensure_tag_page(tag):
 
 
 def ensure_category_page(category):
-    """Create _categories/<slug>.md if it doesn't exist yet."""
     CATEGORIES_DIR.mkdir(exist_ok=True)
     slug = slugify(category)
     cat_file = CATEGORIES_DIR / f"{slug}.md"
@@ -175,31 +171,45 @@ def find_image(filename, search_dirs):
 
 
 def convert(content, post_slug, search_dirs, img_dir):
+    # Fix bare image references
     content = re.sub(r'!Pasted image ([^\n]+\.png)', r'![[Pasted image \1]]', content)
+
+    # Fix headings missing space after #
+    content = re.sub(r'^(#{1,6})([^ #\n])', r'\1 \2', content, flags=re.MULTILINE)
+
+    # Obsidian comments
     content = re.sub(r'%%.*?%%', '', content, flags=re.DOTALL)
+
+    # Callouts
     content = re.sub(
         r'^> \[!(\w+)\]\s*(.*?)$',
         lambda m: f"> **{m.group(1).capitalize()}:** {m.group(2).strip()}",
         content, flags=re.MULTILINE
     )
 
+    # ![[image.png]] and ![[image.png|caption]]
     def handle_wiki_image(m):
-        filename = m.group(1)
+        raw      = m.group(1)
+        filename = raw.split('|')[0].strip()
+        alt      = raw.split('|')[1].strip() if '|' in raw else Path(filename).stem
         src = find_image(filename, search_dirs)
         if src:
             shutil.copy2(str(src), str(img_dir / filename))
             print(f"[+] Copied: {filename}")
         else:
             print(f"[!] Not found: {filename} — add manually to {img_dir}/")
-        return f"![{Path(filename).stem}](/assets/img/posts/{post_slug}/{filename})"
+        return f"![{alt}](/assets/img/posts/{post_slug}/{filename})"
 
     content = re.sub(r'!\[\[([^\]]+)\]\]', handle_wiki_image, content)
+
+    # [[wikilinks]]
     content = re.sub(
         r'\[\[([^\]|]+)(?:\|([^\]]+))?\]\]',
         lambda m: m.group(2) or m.group(1),
         content
     )
 
+    # ![alt](image.png) standard markdown images
     def handle_md_image(m):
         alt      = m.group(1)
         filename = m.group(2)
@@ -226,7 +236,6 @@ def process_file(src, post_date, category=None, difficulty=None, os_tag=None, ta
     slug      = slugify(title)
     post_name = f"{post_date}-{slug}"
 
-    # Infer from subdir name if not passed via CLI
     subdir_key = src.parent.name.lower()
     if not category:
         category = SUBDIR_CATEGORY_MAP.get(subdir_key) or \
@@ -245,7 +254,6 @@ def process_file(src, post_date, category=None, difficulty=None, os_tag=None, ta
         extra = prompt_extra_tags()
         tags += [t for t in extra if t not in tags]
 
-    # Ensure tag and category pages exist
     for tag in tags:
         ensure_tag_page(tag)
     ensure_category_page("HackTheBox")
@@ -295,7 +303,6 @@ def main():
 
     post_date = parse_date(args.date)
 
-    # --- Single file mode ---
     if args.input:
         src = Path(args.input).expanduser().resolve()
         if not src.exists():
@@ -303,7 +310,6 @@ def main():
         process_file(src, post_date, args.category, args.difficulty, args.os, args.tags)
         return
 
-    # --- Scan mode ---
     published = get_published_slugs()
     all_files = scan_writeups()
     new_files = [f for f in all_files if slugify(f.stem) not in published]
