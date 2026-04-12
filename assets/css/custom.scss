@@ -7,19 +7,6 @@ div.highlight::before {
   display: none !important;
 }
 
-/* Hide line numbers in code blocks */
-.highlight table td:first-child {
-  display: none;
-}
-
-.highlight table td.rouge-code {
-  padding-left: 1.25rem !important;
-}
-
-.highlight table {
-  border: none;
-}
-
 /* Code block background */
 .highlight, div[class^=language-] {
   background-color: #1a1a2e !important;

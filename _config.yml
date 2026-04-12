@@ -53,7 +53,8 @@ kramdown:
     span:
       line_numbers: false
     block:
-      line_numbers: false
+      line_numbers: true
+      start_line: 1
     theme: monokai
 collections:
   tabs:
